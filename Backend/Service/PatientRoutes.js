@@ -9,17 +9,15 @@ module.exports = app => {
     // Retrieve all patients
     router.get("/", patients.findall);
   
-    // // Retrieve a single Patient with id
-    // router.get("/:id", patients.findOne);
+    // Retrieve a single Patient with id
+    router.get("/:id", patients.findById);
   
-    // // Update a Patient with id
-    // router.put("/:id", patients.update);
+    // Update a Patient with id
+    router.put("/:id", patients.update);
   
-    // // Delete a Patient with id
-    // router.delete("/:id", patients.delete);
-  
-    // // Delete all Patients
-    // router.delete("/", patients.deleteAll);
+    // Delete a Patient with id
+    router.delete("/:id", patients.delete);
+
   
     app.use('/api/patients', router);
   };

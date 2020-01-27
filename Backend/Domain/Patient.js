@@ -13,10 +13,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.CHAR
       },
       altura: {
-        type: Sequelize.DECIMAL
+        type: Sequelize.DECIMAL(4,2)
       },
       peso: {
-        type: Sequelize.DECIMAL
+        type: Sequelize.DECIMAL(5,2)
       }
     });
   
