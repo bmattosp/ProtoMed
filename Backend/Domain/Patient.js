@@ -1,3 +1,5 @@
+const Consult = require("./Consult");
+
 module.exports = (sequelize, Sequelize) => {
     const Patient = sequelize.define("patient", {
       nome: {
@@ -19,6 +21,12 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.DECIMAL(5,2)
       }
     });
-  
+
+    Patient.associate = function(models) {
+      Patient.hasMany(models.Consult);
+    }; 
+
+ 
     return Patient;
   };
+

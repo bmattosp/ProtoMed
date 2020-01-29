@@ -16,11 +16,11 @@ export default new Router({
       path: "/patients/:id",
       name: "patient-details",
       component: () => import("./components/PatientDetails")
+    },
+    {
+      path: "/newPatient",
+      name: "newPatient",
+      component: () => import("./components/NewPatient")
     }
-    // {
-    //   path: "/add",
-    //   name: "add",
-    //   component: () => import("./components/AddPatient")
-    // }
   ]
 });

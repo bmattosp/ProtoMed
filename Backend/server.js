@@ -24,6 +24,7 @@ app.get("/", (req, res) => {
 });
 
 require("./Service/PatientRoutes")(app);
+require("./Service/ConsultRoutes")(app);
 
 
 const PORT = process.env.PORT || 8082;

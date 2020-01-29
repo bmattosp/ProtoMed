@@ -36,7 +36,6 @@
       <div class="form-group">
         <input type="button" @click="updatePatient()" class="btn btn-success" id="updateBtn" value="Atualiza"/>
         <input type="button" @click="deletePatient()" class="btn btn-danger" id="deleteBtn" value="Exclui"/>
-        <input type="button" @click="newConsult()" class="btn btn-danger" id="newConsultBtn" value="Nova Consulta"/>
       </div>
     </form>
 
@@ -44,12 +43,6 @@
   <div v-else>
     <h2>{{msgResult}}</h2>
   </div>
-
-  <div v-if="showNewConsult">
-    aaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    <NewConsult/>
-  </div>
-
 </div>
 </template>
 
@@ -67,8 +60,7 @@ export default {
     return {
         currentPatient: null,
         subimitted: false,
-        msgResult: 'Patient updated!',
-        showNewConsult: false
+        msgResult: 'Patient updated!'
     }
   },
   methods: {
@@ -101,10 +93,6 @@ export default {
       .catch(err => {
         this.msgResult = "Something wents wrong. Try again. Server Message: " + err;
       });
-    },
-    newConsult()
-    {
-      this.showNewConsult= true;
     }
   },
   mounted() {

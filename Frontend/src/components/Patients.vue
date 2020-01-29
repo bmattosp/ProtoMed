@@ -1,21 +1,46 @@
 <template>
-  <div class="hello">
-    <div>
-      <button @click="newPatient" class="btn btn-success">Novo Paciente</button>
+  <section class="container">
+    <h2>Patients List</h2>
+    <div class="row">
+      <div class="col">
+        <button @click="newPatient()" class="btn btn-success">Novo Paciente</button>
+      </div>
     </div>
-    <div class="col-md-6">
-      <h4>Patients List</h4>
-      <ul class="list-group">
-        <li class="list-group-item"
-          :class="{ active: index == currentIndex }"
-          v-for="(patient, index) in patients"
-          :key="index"
-        >
-          {{ patient.nome }}
-        </li>
-      </ul>
-    </div>
-  </div>
+    
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Data Nascimento</th>
+          <th scope="col">Sexo</th>
+          <th scope="col">Telefone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(patient, index) in patients" :key="index" @click="clickTableRow(patient.id)">
+          <td>
+              {{ patient.id }}
+          </td>
+          <td>
+              {{ patient.nome }}
+          </td>
+          <td>
+              {{ConvertData(patient.dataNascimento)}}
+          </td>
+          <td>
+              {{ patient.sexo }}
+          </td>
+          <td>
+              {{ patient.telefone }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+
+
+  </section>
 </template>
 
 <script>
@@ -45,9 +70,18 @@ export default {
 
     },
     newPatient() {
-      router.push({name:"patient-details", params: { id: '3' } });
+      router.push({name:"newPatient"});
 
+    },
+    ConvertData(umaData) {
+      return (new Date(umaData)).toLocaleDateString();
+
+    },
+    clickTableRow(idClick)
+    {
+      router.push({name:"patient-details", params: {id: idClick}});
     }
+
   },
   mounted() {
     this.getPatients();
