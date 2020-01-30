@@ -40,6 +40,11 @@
       </div>
     </form>
 
+    <!-- <ul>
+      <li v-for="(consult, index) in consults"/>
+
+    </ul> -->
+
   </div>
   <div v-else>
     <h2>{{msgResult}}</h2>
@@ -56,6 +61,7 @@
 <script>
 
 import PatientsDataService from "../service/PatientsDataService";
+import router from "../router";
 
 export default {
 
@@ -104,7 +110,8 @@ export default {
     },
     newConsult()
     {
-      this.showNewConsult= true;
+      router.push({name:"newConsult", params: {patientId: this.currentPatient.id, patientName: this.currentPatient.nome}});
+
     }
   },
   mounted() {
