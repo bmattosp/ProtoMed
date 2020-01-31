@@ -4,7 +4,7 @@
     <h2>{{currentPatient.nome}}</h2>
     <form>
       <div class="form-group">
-        <label for="nome">Nome</label>
+        <label for="nome">Data Consulta</label>
         <input type="text" class="form-control" id="nome"
           v-model="currentPatient.nome"
         />

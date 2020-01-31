@@ -1,5 +1,6 @@
 const db = require("../Infra/SequelizeContext");
 const Patient = db.patients;
+const Consult = db.consults;
 const Op = db.Sequelize.Op;
 
 // Create and Save a Patient
@@ -44,8 +45,8 @@ exports.create = (req, res) => {
     const id = req.params.id;
 
 
-    Patient.findByPk(id).
-    then(data => {res.send(data)})
+    Patient.findByPk(id, {include: db.consults })
+    .then(data => {res.send(data)})
     .catch(err => {
         res.status(500).send({message: err.message || "Problem find all patients. Try again later."})
     })

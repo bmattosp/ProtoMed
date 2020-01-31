@@ -23,5 +23,7 @@ db.sequelize = sequelize;
 db.patients = require("../../Domain/Patient.js")(sequelize, Sequelize);
 db.consults = require("../../Domain/Consult.js")(sequelize, Sequelize);
 
+db.patients.hasMany(db.consults);
+db.consults.belongsTo(db.patients);
 
 module.exports = db;

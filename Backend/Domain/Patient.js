@@ -1,7 +1,6 @@
-const Consult = require("./Consult");
 
 module.exports = (sequelize, Sequelize) => {
-    const Patient = sequelize.define("patient", {
+    var Patient = sequelize.define("patient", {
       nome: {
         type: Sequelize.STRING
       },
@@ -22,11 +21,10 @@ module.exports = (sequelize, Sequelize) => {
       }
     });
 
-    Patient.associate = function(models) {
-      Patient.hasMany(models.Consult);
-    }; 
+    // Patient.associate = function(models) {
+    //   Patient.hasMany(models.consult, {as: consultsList, foreignKey: patientId});
+    // }; 
 
- 
     return Patient;
   };
 

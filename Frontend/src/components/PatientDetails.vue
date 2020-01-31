@@ -1,6 +1,7 @@
 <template>
 <div class="container">
   <div v-if="!subimitted" >
+    <div>
     <h2>{{currentPatient.nome}}</h2>
     <form>
       <div class="form-group">
@@ -22,13 +23,13 @@
         />
       </div>
       <div class="form-group">
-        <label for="altura">Nome</label>
+        <label for="altura">Altura</label>
         <input type="text" class="form-control" id="altura"
           v-model="currentPatient.altura"
         />
       </div>
       <div class="form-group">
-        <label for="peso">Nome</label>
+        <label for="peso">Peso</label>
         <input type="text" class="form-control" id="peso"
           v-model="currentPatient.peso"
         />
@@ -39,21 +40,28 @@
         <input type="button" @click="newConsult()" class="btn btn-danger" id="newConsultBtn" value="Nova Consulta"/>
       </div>
     </form>
+    </div>
 
-    <!-- <ul>
-      <li v-for="(consult, index) in consults"/>
-
-    </ul> -->
+    <div id="accordion">
+      <div class="card" v-for="(consult, index) in currentPatient.consults" :key="index">
+        <div class="card-header">
+          <a class="card-link" data-toggle="collapse" :href="'#collapse' + index">
+            {{consult.data}}
+          </a>
+        </div>
+        <div :id="'collapse' + index" class="collapse show" data-parent="#accordion">
+          <div class="card-body">
+            {{consult.anotacoes}}
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
   <div v-else>
     <h2>{{msgResult}}</h2>
   </div>
 
-  <div v-if="showNewConsult">
-    aaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    <NewConsult/>
-  </div>
 
 </div>
 </template>

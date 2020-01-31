@@ -28,13 +28,25 @@ exports.create = (req, res) => {
 
 exports.findall = (req, res) => {
 
-  Consult.findAll().
+  Consult.findAll({include: db.patients }).
   then(data => {res.send(data)})
   .catch(err => {
       res.status(500).send({message: err.message || "Problem find all Consults. Try again later."})
   })
 
 };
+
+exports.findallScheduleds = (req, res) => {
+
+  Consult.findAll({ where:{data: {[Op.gte]:  new Date() }} ,include: db.patients }).
+  then(data => {res.send(data)})
+  .catch(err => {
+      res.status(500).send({message: err.message || "Problem find all Consults. Try again later."})
+  })
+
+};
+
+
 
 exports.findById = (req, res) => {
 
