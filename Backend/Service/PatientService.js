@@ -45,8 +45,22 @@ exports.create = (req, res) => {
     const id = req.params.id;
 
 
-    Patient.findByPk(id, {include: db.consults })
-    .then(data => {res.send(data)})
+    var patientsData = Patient.findByPk(id, 
+      { 
+        include: [ 
+        {
+        model: db.consults,
+        where : {data: {[Op.gte]:  new Date() }},
+        as: 'scheduledConsults'
+        },
+
+        {
+        model: db.consults,
+        where : {data: {[Op.lt]:  new Date() }},
+        as: 'historicalConsults'
+        }]
+      } 
+    ).then(data => {res.send(data)})
     .catch(err => {
         res.status(500).send({message: err.message || "Problem find all patients. Try again later."})
     })

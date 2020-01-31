@@ -42,16 +42,37 @@
     </form>
     </div>
 
-    <div id="accordion">
-      <div class="card" v-for="(consult, index) in currentPatient.consults" :key="index">
-        <div class="card-header">
-          <a class="card-link" data-toggle="collapse" :href="'#collapse' + index">
-            {{consult.data}}
-          </a>
+    <div>
+      <h2>Consultas Agendadas</h2>
+      <div id="accordion">
+        <div class="card" v-for="(consult, index) in currentPatient.scheduledConsults" :key="index">
+          <div class="card-header">
+            <a class="card-link" data-toggle="collapse" :href="'#collapseSched' + index">
+              {{consult.data}}
+            </a>
+          </div>
+          <div :id="'collapseSched' + index" class="collapse show" data-parent="#accordion">
+            <div class="card-body">
+              {{consult.anotacoes}}
+            </div>
+          </div>
         </div>
-        <div :id="'collapse' + index" class="collapse show" data-parent="#accordion">
-          <div class="card-body">
-            {{consult.anotacoes}}
+      </div>
+    </div>
+
+    <div>
+      <h2>Consultas Históricas</h2>
+      <div id="accordion">
+        <div class="card" v-for="(consult, index) in currentPatient.historicalConsults" :key="index">
+          <div class="card-header">
+            <a class="card-link" data-toggle="collapse" :href="'#collapseHist' + index">
+              {{consult.data}}
+            </a>
+          </div>
+          <div :id="'collapseHist' + index" class="collapse show" data-parent="#accordion">
+            <div class="card-body">
+              {{consult.anotacoes}}
+            </div>
           </div>
         </div>
       </div>
