@@ -3,20 +3,23 @@ module.exports = app => {
   
     var router = require("express").Router();
   
-    // Create a new Patient
+    // Create a new Consult
     router.post("/", consultService.create);
   
-    // Retrieve all patients
+    // Retrieve all Consults
     router.get("/", consultService.findall);
 
-    // Retrieve all patients
+    // Retrieve all Consults
     router.get("/scheduleds", consultService.findallScheduleds);
   
-    // Retrieve a single Patient with id
+    // Retrieve a single Consult with id
     router.get("/:id", consultService.findById);
   
-    // Delete a Patient with id
+    // Delete a Consult with id
     router.delete("/:id", consultService.delete);
+
+     // Delete a Consult with id
+    router.put("/note", consultService.updateNote);
 
   
     app.use('/api/consults', router);

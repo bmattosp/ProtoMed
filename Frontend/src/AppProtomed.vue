@@ -1,6 +1,10 @@
 <template>
   <div id="appProtomed">
     <h1>PROTOMED</h1>
+    <nav>
+  <a href="/patients">Pacientes</a> |
+  <a href="/consults">Consultas Agendadas</a> 
+</nav>
     <div>
       <router-view/>
     </div>

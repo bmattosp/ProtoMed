@@ -46,6 +46,23 @@ exports.findallScheduleds = (req, res) => {
 
 };
 
+exports.updateNote = (req, res) => {
+
+  var oneConsult =  req.body;
+
+  var consult = Consult.findByPk(oneConsult.consultId);
+  consult.anotacoes = oneConsult.anotacao;
+  
+  Consult.update({anotacoes: consult.anotacoes}, {
+    where: { id: oneConsult.consultId }
+  })
+  .then(data => {res.send(data)})
+  .catch(err => {
+      res.status(500).send({message: err.message || "Problem find all Consults. Try again later."})
+  })
+
+};
+
 
 
 exports.findById = (req, res) => {

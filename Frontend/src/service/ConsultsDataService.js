@@ -17,6 +17,10 @@ class ConsultsDataService {
     return http.post("/consults", data);
   }
 
+  updateConsultNote(data) {
+    return http.put('/consults/note', data);
+  }
+
   // update(id, data) {
   //   return http.put(`/consults/${id}`, data);
   // }

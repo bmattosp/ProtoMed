@@ -23,7 +23,7 @@
       </div>
       <div class="form-group">
         <label for="dataNascimento">Data de Nascimento</label>
-        <input type="text" class="form-control" id="dataNascimento"
+        <input type="date" class="form-control" id="dataNascimento"
           v-model="currentPatient.dataNascimento"
         />
       </div>

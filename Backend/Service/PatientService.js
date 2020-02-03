@@ -51,13 +51,15 @@ exports.create = (req, res) => {
         {
         model: db.consults,
         where : {data: {[Op.gte]:  new Date() }},
-        as: 'scheduledConsults'
+        as: 'scheduledConsults',
+        required: false
         },
 
         {
         model: db.consults,
         where : {data: {[Op.lt]:  new Date() }},
-        as: 'historicalConsults'
+        as: 'historicalConsults',
+        required: false
         }]
       } 
     ).then(data => {res.send(data)})

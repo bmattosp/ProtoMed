@@ -5,7 +5,7 @@
     <form>
       <div class="form-group">
         <label for="data">Data</label>
-        <input type="text" class="form-control" id="data"
+        <input type="datetime-local" class="form-control" id="data"
           v-model="currentConsult.data"
         />
       </div>

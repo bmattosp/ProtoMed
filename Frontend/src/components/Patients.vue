@@ -1,4 +1,5 @@
 <template>
+
   <section class="container">
     <h2>Patients List</h2>
     <div class="row">
@@ -41,6 +42,7 @@
 
 
   </section>
+
 </template>
 
 <script>

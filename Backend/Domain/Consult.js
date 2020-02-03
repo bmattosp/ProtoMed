@@ -6,7 +6,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.DATEONLY
       },
       anotacoes: {
-        type: Sequelize.CHAR,
+        type: Sequelize.TEXT,
         allowNull: true
       }
     //   ,

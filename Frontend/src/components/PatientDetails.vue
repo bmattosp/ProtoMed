@@ -23,6 +23,12 @@
         />
       </div>
       <div class="form-group">
+        <label for="dataNascimetno">Data Nascimento</label>
+        <input type="date" class="form-control" id="dataNascimento"
+          v-model="currentPatient.dataNascimento"
+        />
+      </div>
+      <div class="form-group">
         <label for="altura">Altura</label>
         <input type="text" class="form-control" id="altura"
           v-model="currentPatient.altura"
@@ -35,8 +41,8 @@
         />
       </div>
       <div class="form-group">
-        <input type="button" @click="updatePatient()" class="btn btn-success" id="updateBtn" value="Atualiza"/>
-        <input type="button" @click="deletePatient()" class="btn btn-danger" id="deleteBtn" value="Exclui"/>
+        <input type="button" @click="updatePatient()" class="btn btn-success" id="updateBtn" value="Atualizar"/>
+        <input type="button" @click="deletePatient()" class="btn btn-danger" id="deleteBtn" value="Excluir"/>
         <input type="button" @click="newConsult()" class="btn btn-danger" id="newConsultBtn" value="Nova Consulta"/>
       </div>
     </form>
@@ -53,7 +59,12 @@
           </div>
           <div :id="'collapseSched' + index" class="collapse show" data-parent="#accordion">
             <div class="card-body">
-              {{consult.anotacoes}}
+              <div>
+                <p>{{consult.anotacoes}}</p>                
+              </div>
+              <div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editConsultNotes" @click="editingOneConsultNote(consult)">Alterar</button>
+              </div>
             </div>
           </div>
         </div>
@@ -61,7 +72,7 @@
     </div>
 
     <div>
-      <h2>Consultas Históricas</h2>
+      <h2>Histórico de Consultas</h2>
       <div id="accordion">
         <div class="card" v-for="(consult, index) in currentPatient.historicalConsults" :key="index">
           <div class="card-header">
@@ -83,6 +94,31 @@
     <h2>{{msgResult}}</h2>
   </div>
 
+  <div class="modal fade" id="editConsultNotes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{currentPatient.nome + ' - ' + ConvertData(consultEditing.data)}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="txtareaConsultNotes" class="col-form-label">Anotacoes:</label>
+              <textarea rows="20" cols="500" class="form-control" id="txtareaConsultNotes" v-model="consultEditing.anotacoes"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-primary" @click="updateConsultNotes()">Alterar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 </div>
 </template>
@@ -90,6 +126,7 @@
 <script>
 
 import PatientsDataService from "../service/PatientsDataService";
+import ConsultsDataService from "../service/ConsultsDataService";
 import router from "../router";
 
 export default {
@@ -100,10 +137,11 @@ export default {
   },
   data() {
     return {
-        currentPatient: null,
+        currentPatient: {nome:  '' },
         subimitted: false,
         msgResult: 'Patient updated!',
-        showNewConsult: false
+        showNewConsult: false,
+        consultEditing: { data: '2020-01-01'}
     }
   },
   methods: {
@@ -141,7 +179,38 @@ export default {
     {
       router.push({name:"newConsult", params: {patientId: this.currentPatient.id, patientName: this.currentPatient.nome}});
 
-    }
+    },
+    updateConsultNotes()
+    {
+      if(this.consultEditing == null)
+        return;
+
+      var oneConsult =  
+        {
+          consultId: this.consultEditing.id,
+          anotacao: this.consultEditing.anotacoes,
+          patientId: this.currentPatient.patientId,
+        };
+      
+      ConsultsDataService.updateConsultNote(oneConsult)
+      .then(response => {
+        this.subimitted = (response.status == 200);
+        this.msgResult = "Consult Notes was updated!"
+      })
+      .catch(err => {
+        this.msgResult = "Something wents wrong. Try again. Server Message: " + err;
+      });
+      
+    },
+    editingOneConsultNote(consult)
+    {
+      this.consultEditing = consult;
+
+    },
+    ConvertData(umaData) {
+      return (new Date(umaData)).toLocaleDateString();
+
+    },
   },
   mounted() {
     this.id = this.$route.params.id;
