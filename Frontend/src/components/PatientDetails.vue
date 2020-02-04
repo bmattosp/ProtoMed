@@ -40,83 +40,138 @@
           v-model="currentPatient.peso"
         />
       </div>
-      <div class="form-group">
-        <input type="button" @click="updatePatient()" class="btn btn-success" id="updateBtn" value="Atualizar"/>
-        <input type="button" @click="deletePatient()" class="btn btn-danger" id="deleteBtn" value="Excluir"/>
-        <input type="button" @click="newConsult()" class="btn btn-danger" id="newConsultBtn" value="Nova Consulta"/>
+      <div class="form-group d-flex flex-row-reverse">
+
+        <button @click="updatePatient()" class="btn btn-success ml-2" id="updateBtn" value="Atualizar">
+          <i class="fas fa-pencil-alt"></i>
+        </button>
+        <button type="button" @click="deletePatient()" class="btn btn-danger" id="deleteBtn">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+
       </div>
     </form>
     </div>
 
     <div>
-      <h2>Consultas Agendadas</h2>
-      <div id="accordion">
-        <div class="card" v-for="(consult, index) in currentPatient.scheduledConsults" :key="index">
-          <div class="card-header">
-            <a class="card-link" data-toggle="collapse" :href="'#collapseSched' + index">
-              {{consult.data}}
-            </a>
-          </div>
-          <div :id="'collapseSched' + index" class="collapse show" data-parent="#accordion">
-            <div class="card-body">
-              <div>
-                <p>{{consult.anotacoes}}</p>                
+      <div class="row">
+        <div class="col-12" id="accordion">
+          <div class="card">
+            <div class="card-header" >
+              <div class="row">
+                <div class="col-6">
+                  <h2>Consultas Agendadas</h2>
+                </div>
+                <div class="col-6 d-flex justify-content-end">
+                  <button @click="newConsult()" class="btn" id="newConsultBtn">
+                    <i class="fas fa-plus-circle" style="font-size: 2em; color:green"></i>
+                  </button>
+                </div>
               </div>
-              <div>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editConsultNotes" @click="editingOneConsultNote(consult)">Alterar</button>
+              <div class="row mt-4">
+                <div class="col-12" id="accordion">
+                  <div class="card" v-for="(consult, index) in currentPatient.scheduledConsults" :key="index">
+                    <div class="card-header" >
+                      <div class="row">
+                        <div class="col-6">
+                          <a class="card-link" data-toggle="collapse" :href="'#collapseSched' + index">
+                            <i class="fas fa-folder-open"></i>
+                            {{consult.data}}
+                          </a>
+                        </div>
+                        <div class="col-6 d-flex justify-content-end" v-if="verifyChange(consult.id)">
+                          <span class="">Alterado</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div :id="'collapseSched' + index" class="collapse show" data-parent="#accordion">
+                      <div class="card-body">
+                        <div class="d-flex justify-content-end">
+                          <b-button id="show-btn" @click="editingOneConsultNote(consult);$bvModal.show('editConsultNoteModal');">
+                            <i class="fas fa-pencil-alt"></i>
+                          </b-button>
+                        </div>
+                        <div>
+                          <p>{{consult.anotacoes}}</p>                
+                        </div>
+ 
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div>
-      <h2>Histórico de Consultas</h2>
-      <div id="accordion">
-        <div class="card" v-for="(consult, index) in currentPatient.historicalConsults" :key="index">
-          <div class="card-header">
-            <a class="card-link" data-toggle="collapse" :href="'#collapseHist' + index">
-              {{consult.data}}
-            </a>
-          </div>
-          <div :id="'collapseHist' + index" class="collapse show" data-parent="#accordion">
-            <div class="card-body">
-              {{consult.anotacoes}}
+      </div>
+
+      <div>
+      <div class="row">
+        <div class="col-12" id="accordionHist">
+          <div class="card">
+            <div class="card-header" >
+              <div class="row">
+                <div class="col-6">
+                  <h2>Histórico de Consultas</h2>
+                </div>
+                <div class="col-6 d-flex justify-content-end">
+                  <button @click="newConsult()" class="btn" id="newConsultBtn">
+                    <i class="fas fa-plus-circle" style="font-size: 2em; color:green"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col-12" id="accordion">
+                    <div class="card" v-for="(consult, index) in currentPatient.historicalConsults" :key="index">
+                      <div class="card-header">
+                        <a class="card-link" data-toggle="collapse" :href="'#collapseHist' + index">
+                          {{consult.data}}
+                        </a>
+                      </div>
+                      <div :id="'collapseHist' + index" class="collapse show" data-parent="#accordionHist">
+                      <div class="card-body">
+                        <div class="d-flex justify-content-end">
+                          <b-button class="btn" data-toggle="modal" data-target="#editConsultNotes" @click="editingOneConsultNote(consult)">
+                            <i class="fas fa-pencil-alt"></i>
+                          </b-button>
+                        </div>
+                        <div>
+                          <p>{{consult.anotacoes}}</p>                
+                        </div>
+ 
+                      </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
             </div>
           </div>
+          </div>
         </div>
+
       </div>
-    </div>
 
   </div>
   <div v-else>
     <h2>{{msgResult}}</h2>
   </div>
 
-  <div class="modal fade" id="editConsultNotes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">{{currentPatient.nome + ' - ' + ConvertData(consultEditing.data)}}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="txtareaConsultNotes" class="col-form-label">Anotacoes:</label>
-              <textarea rows="20" cols="500" class="form-control" id="txtareaConsultNotes" v-model="consultEditing.anotacoes"></textarea>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-          <button type="button" class="btn btn-primary" @click="updateConsultNotes()">Alterar</button>
-        </div>
-      </div>
-    </div>
+  <div>
+    <b-modal id="editConsultNoteModal" size="xl" 
+        ref="modal"
+        @ok="handleOk">
+      <template v-slot:modal-title>
+        <h5>{{currentPatient.nome + ' - ' + ConvertData(consultEditing.data)}}</h5>
+      </template>
+      <b-form>
+        <b-form-group class="form-group">
+          <label for="txtareaConsultNotes" class="col-form-label">Anotacoes:</label>
+          <textarea rows="20" cols="500" class="form-control" id="txtareaConsultNotes" v-model="consultEditing.anotacoes"></textarea>
+        </b-form-group>
+      </b-form>
+    </b-modal>
   </div>
 
 
@@ -141,7 +196,8 @@ export default {
         subimitted: false,
         msgResult: 'Patient updated!',
         showNewConsult: false,
-        consultEditing: { data: '2020-01-01'}
+        consultEditing: { data: '2020-01-01'},
+        consultsSavedResult: []
     }
   },
   methods: {
@@ -183,7 +239,7 @@ export default {
     updateConsultNotes()
     {
       if(this.consultEditing == null)
-        return;
+        return false;
 
       var oneConsult =  
         {
@@ -193,24 +249,72 @@ export default {
         };
       
       ConsultsDataService.updateConsultNote(oneConsult)
-      .then(response => {
-        this.subimitted = (response.status == 200);
-        this.msgResult = "Consult Notes was updated!"
+      .then(
+        response => {
+          if(response.status == 200)
+          {
+            this.consultsSavedResult.push({
+              consultId: this.consultEditing.id,
+              success: true,
+              msgResult: "Updated"});
+            
+            return true;
+          }
+          else
+          {
+            this.consultsSavedResult.push({
+              consultId: this.consultEditing.id,
+              success: false,
+              msgResult: "Error: Try Again"});
+
+              return false;
+          }
+
       })
       .catch(err => {
         this.msgResult = "Something wents wrong. Try again. Server Message: " + err;
       });
+
+      return true;
       
     },
     editingOneConsultNote(consult)
     {
       this.consultEditing = consult;
 
+      this.$bvModal.show('editConsultNotes');
+
     },
     ConvertData(umaData) {
       return (new Date(umaData)).toLocaleDateString();
 
     },
+    hideModal()
+    {
+      document.getElementById("editConsultNotes").modal('hide');
+    },
+    handleOk(bvModalEvt) {
+        // Prevent modal from closing
+        bvModalEvt.preventDefault()
+        // Trigger submit handler
+        if(this.updateConsultNotes())
+          this.$nextTick(() => {this.$bvModal.hide('editConsultNoteModal')})
+
+    },
+    verifyChange(paramconsultId)
+    {
+      if(this.consultsSavedResult.length <= 0)
+        return false;
+
+      function equal(id)
+      {
+        return id.consultId == paramconsultId
+      }
+
+      const savedResult = this.consultsSavedResult.find(equal);
+
+      return savedResult.success;
+    }
   },
   mounted() {
     this.id = this.$route.params.id;
