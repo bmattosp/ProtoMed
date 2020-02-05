@@ -19,7 +19,7 @@
               {{ consult.patient.nome }}
           </td>
           <td>
-              {{ConvertData(consult.data)}}
+              {{ConvertToDateComplete(consult.data)}}
           </td>
         </tr>
       </tbody>
@@ -34,6 +34,7 @@
 
 import ConsultsDataService from "../service/ConsultsDataService";
 import router from "../router";
+import utils from "../utils";
 
 export default {
 
@@ -43,7 +44,7 @@ export default {
       consults: [],
 
     }
-  },
+  },  
   methods: {
     getConsults() {
       
@@ -54,8 +55,8 @@ export default {
         .catch();
 
     },
-    ConvertData(umaData) {
-      return (new Date(umaData)).toLocaleDateString();
+    ConvertToDateComplete(umaData) {
+      return utils.ConvertToDateComplete(umaData);
 
     },
     clickTableRow(idClick)

@@ -76,7 +76,7 @@
                         <div class="col-6">
                           <a class="card-link" data-toggle="collapse" :href="'#collapseSched' + index">
                             <i class="fas fa-folder-open"></i>
-                            {{consult.data}}
+                            {{ConvertToDateComplete(consult.data)}}
                           </a>
                         </div>
                         <div class="col-6 d-flex justify-content-end" v-if="verifyChange(consult.id)">
@@ -123,11 +123,12 @@
                 </div>
               </div>
               <div class="row mt-4">
-                <div class="col-12" id="accordion">
+                <div class="col-12" id="accordionHist">
                     <div class="card" v-for="(consult, index) in currentPatient.historicalConsults" :key="index">
                       <div class="card-header">
                         <a class="card-link" data-toggle="collapse" :href="'#collapseHist' + index">
-                          {{consult.data}}
+                          <i class="fas fa-folder-open"></i>
+                          {{ConvertToDateComplete(consult.data)}}
                         </a>
                       </div>
                       <div :id="'collapseHist' + index" class="collapse show" data-parent="#accordionHist">
@@ -183,6 +184,7 @@
 import PatientsDataService from "../service/PatientsDataService";
 import ConsultsDataService from "../service/ConsultsDataService";
 import router from "../router";
+import utils from "../utils";
 
 export default {
 
@@ -286,7 +288,11 @@ export default {
 
     },
     ConvertData(umaData) {
-      return (new Date(umaData)).toLocaleDateString();
+      return utils.ConvertData(umaData);
+
+    },
+    ConvertToDateComplete(umaData) {
+      return utils.ConvertToDateComplete(umaData);
 
     },
     hideModal()

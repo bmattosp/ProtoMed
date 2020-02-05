@@ -26,7 +26,7 @@
             <span class="sr-only">(current)</span>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="/consults">Consultas Agendadas</a>
         </li>
       </ul>
@@ -45,6 +45,7 @@
 <script>
 export default {
   name: "appProtomed"
+
 };
 </script>
 
