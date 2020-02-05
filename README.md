@@ -1,11 +1,13 @@
 # ProtoMed
 Project created for PBMED interview exam.
 
-# Instrunctions to run the application
+##
+
+## Instrunctions to run the application
 
 All commands showned here, has to be executed by command line. I´ve used powershell.
 
-# Requirements
+## Requirements
 
 >MySQL:
      Link: https://www.mysql.com/downloads/  
@@ -16,13 +18,13 @@ All commands showned here, has to be executed by command line. I´ve used powers
     Chocolatey: choco install nodejs
 
 
-## BackEnd setup
+### BackEnd setup
 
-### 1º step - Open the Backend folder
+#### 1º step - Open the Backend folder
 
 Open the command prompt, then navegate to /Backend dir inside the project dir.
 
-### 2º step - Dependencies install
+#### 2º step - Dependencies install
 
 Use npm to install all backend dependencies
 
@@ -30,7 +32,7 @@ Use npm to install all backend dependencies
 npm install
 ```
 
-### 3º step - Config the sequelize context
+#### 3º step - Config the sequelize context
 
 Open the project, then inside /Backend/Infra/SequelizeContext has the db.config.js file.
 Edit the file and fill the fields with your database configuration.
@@ -62,11 +64,11 @@ After run, all database will be created by Sequelize, and the api routes will be
 
 
 
-## FrontEnd setup
+### FrontEnd setup
 
 All the commands has to be runned at /FrontEnd folder.
 
-### 1º step
+#### 1º step
 
 Execute npm to install all the dependencies
 
