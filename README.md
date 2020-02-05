@@ -32,7 +32,7 @@ npm install
 
 ### 3º step - Config the sequelize context
 
-Open the project, then inside /Backend/InfraSequelizeContext has the db.config.js file.
+Open the project, then inside /Backend/Infra/SequelizeContext has the db.config.js file.
 Edit the file and fill the fields with your database configuration.
 
 Example:
@@ -40,7 +40,7 @@ Example:
 module.exports = {
     HOST: "localhost",
     USER: "root",
-    PASSWORD: "123456",
+    PASSWORD: "blablabla",
     DB: "protomedDB",
     dialect: "mysql",
     pool: {
@@ -58,7 +58,7 @@ Execute the command above to run the backend server
 ```
 node server.js
 ```
-
+After run, all database will be created by Sequelize, and the api routes will be up to use.
 
 
 
