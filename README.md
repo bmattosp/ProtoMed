@@ -54,6 +54,14 @@ module.exports = {
   };
 ```
 
+#### 4º step - Script to create the db scheme
+
+Open mysql and run the script above to create the scheme where all the tables will be in.
+
+```
+CREATE SCHEMA `protomeddb` ;
+```
+
 #### Final step - Run the server.js
 
 Execute the command above to run the backend server
