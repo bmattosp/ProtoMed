@@ -13,14 +13,12 @@
       <div class="form-group">
         <label for="telefone">Telefone</label>
         <input type="text" class="form-control" id="telefone"
-          v-model="currentPatient.telefone"
+          v-model="currentPatient.telefone" v-mask="['(##)#########']"
         />
       </div>
       <div class="form-group">
         <label for="sexo">Sexo</label>
-        <input type="text" class="form-control" id="sexo"
-          v-model="currentPatient.sexo"
-        />
+        <b-form-select v-model="currentPatient.sexo" :options="SexoOptions" size="sm" class="mt-3"></b-form-select>
       </div>
       <div class="form-group">
         <label for="dataNascimetno">Data Nascimento</label>
@@ -31,13 +29,13 @@
       <div class="form-group">
         <label for="altura">Altura</label>
         <input type="text" class="form-control" id="altura"
-          v-model="currentPatient.altura"
+          v-model="currentPatient.altura" v-mask="'#.##'"
         />
       </div>
       <div class="form-group">
         <label for="peso">Peso</label>
         <input type="text" class="form-control" id="peso"
-          v-model="currentPatient.peso"
+          v-model="currentPatient.peso" v-mask="['#.##', '##.##', '###.##' ]"
         />
       </div>
       <div class="form-group d-flex flex-row-reverse">
@@ -87,12 +85,12 @@
                     <div :id="'collapseSched' + index" class="collapse show" data-parent="#accordion">
                       <div class="card-body">
                         <div class="d-flex justify-content-end">
-                          <b-button id="show-btn" @click="editingOneConsultNote(consult);$bvModal.show('editConsultNoteModal');">
+                          <b-button variant="outline" id="show-btn" @click="editingOneConsultNote(consult);$bvModal.show('editConsultNoteModal');">
                             <i class="fas fa-pencil-alt"></i>
                           </b-button>
                         </div>
                         <div>
-                          <p>{{consult.anotacoes}}</p>                
+                          <textarea class="form-control" v-model="consult.anotacoes"></textarea>                
                         </div>
  
                       </div>
@@ -126,7 +124,7 @@
                 <div class="col-12" id="accordionHist">
                     <div class="card" v-for="(consult, index) in currentPatient.historicalConsults" :key="index">
                       <div class="card-header">
-                        <a class="card-link" data-toggle="collapse" :href="'#collapseHist' + index">
+                        <a class="card-link" data-toggle="collapse" :href="'#collapseHist' + index" aria-expanded="false">
                           <i class="fas fa-folder-open"></i>
                           {{ConvertToDateComplete(consult.data)}}
                         </a>
@@ -134,12 +132,12 @@
                       <div :id="'collapseHist' + index" class="collapse show" data-parent="#accordionHist">
                       <div class="card-body">
                         <div class="d-flex justify-content-end">
-                          <b-button class="btn" data-toggle="modal" data-target="#editConsultNotes" @click="editingOneConsultNote(consult)">
+                          <b-button variant="outline" id="show-btn" @click="editingOneConsultNote(consult);$bvModal.show('editConsultNoteModal');">
                             <i class="fas fa-pencil-alt"></i>
                           </b-button>
                         </div>
                         <div>
-                          <p>{{consult.anotacoes}}</p>                
+                          <textarea class="form-control" v-model="consult.anotacoes"></textarea>                
                         </div>
  
                       </div>
@@ -175,7 +173,6 @@
     </b-modal>
   </div>
 
-
 </div>
 </template>
 
@@ -199,7 +196,13 @@ export default {
         msgResult: 'Patient updated!',
         showNewConsult: false,
         consultEditing: { data: '2020-01-01'},
-        consultsSavedResult: []
+        consultsSavedResult: [],
+        SexoOptions: [
+          { value: null, text: 'Escolha uma opção' },
+          { value: 'M', text: 'Masculino' },
+          { value: 'F', text: 'Feminino' },
+          { value: 'N', text: 'Não Quero Declarar' },
+        ]
     }
   },
   methods: {

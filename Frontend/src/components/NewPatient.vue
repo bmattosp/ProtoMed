@@ -12,14 +12,12 @@
       <div class="form-group">
         <label for="telefone">Telefone</label>
         <input type="text" class="form-control" id="telefone"
-          v-model="currentPatient.telefone"
+          v-model="currentPatient.telefone" v-mask="['(##)#########']"
         />
       </div>
       <div class="form-group">
         <label for="sexo">Sexo</label>
-        <input type="text" class="form-control" id="sexo"
-          v-model="currentPatient.sexo"
-        />
+        <b-form-select v-model="currentPatient.sexo" :options="SexoOptions" size="sm" class="mt-3"></b-form-select>
       </div>
       <div class="form-group">
         <label for="dataNascimento">Data de Nascimento</label>
@@ -30,13 +28,13 @@
       <div class="form-group">
         <label for="altura">Altura</label>
         <input type="text" class="form-control" id="altura"
-          v-model="currentPatient.altura"
+          v-model="currentPatient.altura" v-mask="'#.##'"
         />
       </div>
       <div class="form-group">
         <label for="peso">Peso</label>
         <input type="text" class="form-control" id="peso"
-          v-model="currentPatient.peso"
+          v-model="currentPatient.peso" v-mask="['#.##', '##.##', '###.##' ]"
         />
       </div>
       <div class="form-group">
@@ -72,7 +70,14 @@ export default {
           peso: 0.00
         },
         subimitted: false,
-        msgResult: 'Patient was created!'
+        msgResult: 'Patient was created!',
+
+        SexoOptions: [
+          { value: null, text: 'Escolha uma opção' },
+          { value: 'M', text: 'Masculino' },
+          { value: 'F', text: 'Feminino' },
+          { value: 'N', text: 'Não Quero Declarar' },
+        ]
     }
   },
   methods: {
