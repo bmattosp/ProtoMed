@@ -11,7 +11,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(consult, index) in consults" :key="index" @click="clickTableRow(consult.id)">
+        <tr v-for="(consult, index) in consults" :key="index" >
           <td>
               {{ consult.id }}
           </td>

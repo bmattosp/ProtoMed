@@ -6,10 +6,44 @@ const Op = db.Sequelize.Op;
 // Create and Save a Patient
 exports.create = (req, res) => {
 
-    if(!req.body.nome)
+  try
+  {
+    if(req.body.nome == "")
     {
         res.status(400).send({
             message:"nome can not be empty!"
+            });
+            return;  
+    }
+
+    if(req.body.telefone == "")
+    {
+        res.status(400).send({
+            message:"telefone can not be empty!"
+            });
+            return;  
+    }
+
+    if(req.body.sexo == "")
+    {
+        res.status(400).send({
+            message:"sexo can not be empty!"
+            });
+            return;  
+    }
+
+    if(req.body.altura <= 0)
+    {
+        res.status(400).send({
+            message:"altura is invalid!"
+            });
+            return;  
+    }
+
+    if(req.body.peso <= 0)
+    {
+        res.status(400).send({
+            message:"peso is invalid!"
             });
             return;  
     }
@@ -28,6 +62,12 @@ exports.create = (req, res) => {
     .catch(err => {
         res.status(500).send({message: err.message || "Problem creating a new patient. Try again later."})
     })
+  }
+  catch (err)
+  {
+    console.log(err.message);
+    res.status(500).send();
+  }
  };
 
   exports.findall = (req, res) => {
@@ -41,6 +81,15 @@ exports.create = (req, res) => {
   };
 
   exports.findById = (req, res) => {
+
+    
+    if(req.params.id <= 0)
+    {
+        res.status(400).send({
+            message:"id is invalid!"
+            });
+            return;  
+    }
 
     const id = req.params.id;
 
@@ -96,6 +145,15 @@ exports.create = (req, res) => {
 
 
     exports.delete = (req, res) => {
+
+      if(req.params.id <= 0)
+      {
+          res.status(400).send({
+              message:"id is invalid!"
+              });
+              return;  
+      }
+
     const id = req.params.id;
 
     Patient.destroy({

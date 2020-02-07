@@ -1,9 +1,10 @@
 <template>
 
   <section class="container">
+    <Alert v-bind:Message="AlertMessage.Mensagem" v-bind:Success="AlertMessage.Success"></Alert> 
     <h2>Patients List</h2>
     <div class="row">
-      <div class="col">
+      <div class="col  d-flex justify-content-end">
         <button @click="newPatient()" class="btn btn-success">Novo Paciente</button>
       </div>
     </div>
@@ -19,7 +20,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(patient, index) in patients" :key="index" @click="clickTableRow(patient.id)">
+        <tr style="cursor: pointer" v-for="(patient, index) in patients" :key="index" @click="clickTableRow(patient.id)">
           <td>
               {{ patient.id }}
           </td>
@@ -48,14 +49,24 @@
 <script>
 
 import PatientsDataService from "../service/PatientsDataService";
+import Alert from "./AlertMessage";
 import router from "../router";
 
 export default {
 
   name: 'Patients',
+  components: {
+    Alert
+  },
   data() {
     return {
       patients: [],
+      AlertMessage:
+      {
+        Show: true,
+        Mensagem: "",
+        Success: true
+      }
 
     }
   },
@@ -63,12 +74,17 @@ export default {
     getPatients() {
 
       this.patients = ["Patient 1", "Patient 2", "Patient 3"];
-      
+
       PatientsDataService.getAll()
       .then(response => {
-          this.patients = response.data;
+          if(response.data == null)
+            this.AlertMessage = {Mensagem:"No result!"};
+          else 
+            this.patients = response.data;
         })
-        .catch();
+        .catch(err => {
+          this.AlertMessage = {Mensagem:"Something wents wrong!" + err};
+        });
 
     },
     newPatient() {
@@ -86,6 +102,9 @@ export default {
 
   },
   mounted() {
+    if(this.$route.params.AlertMessage != null)
+      this.AlertMessage = this.$route.params.AlertMessage;
+
     this.getPatients();
   }
 };

@@ -8,7 +8,15 @@ exports.create = (req, res) => {
     if(req.body.patientId <= 0)
     {
         res.status(400).send({
-            message:"nome can not be empty!"
+            message:"patient can not be empty!"
+            });
+            return;  
+    }
+
+    if(req.body.data == null)
+    {
+        res.status(400).send({
+            message:"date can not be empty!"
             });
             return;  
     }
@@ -67,6 +75,15 @@ exports.updateNote = (req, res) => {
 
 exports.findById = (req, res) => {
 
+
+    if( req.params.id <= 0)
+    {
+        res.status(400).send({
+            message:"id can not be empty!"
+            });
+            return;  
+    }
+
   const id = req.params.id;
 
 
@@ -79,6 +96,16 @@ exports.findById = (req, res) => {
 };
 
 exports.delete = (req, res) => {
+
+    
+    if( req.params.id <= 0)
+    {
+        res.status(400).send({
+            message:"id can not be empty!"
+            });
+            return;  
+    }
+    
   const id = req.params.id;
 
   Consult.destroy({

@@ -1,5 +1,6 @@
 <template>
 <div class="container">
+  <Alert v-bind:Message="msgResult"></Alert>
   <div v-if="!subimitted" >
     <h2>Novo Paciente</h2>
     <form>
@@ -51,10 +52,15 @@
 <script>
 
 import PatientsDataService from "../service/PatientsDataService";
+import router from "../router";
+import Alert from "./AlertMessage";
 
 export default {
 
   name: 'NewPatient',
+  components: {
+    Alert
+  },
   props: {
 
   },
@@ -70,7 +76,7 @@ export default {
           peso: 0.00
         },
         subimitted: false,
-        msgResult: 'Patient was created!',
+        msgResult: '',
 
         SexoOptions: [
           { value: null, text: 'Escolha uma opção' },
@@ -85,10 +91,30 @@ export default {
     {
       PatientsDataService.create(this.currentPatient)
       .then(response => {
-        this.subimitted = (response.status == 200);
+        if(response.status == 200)
+        {
+          this.subimitted = true;
+          router.push({
+            name:"patients", 
+            params: {
+              AlertMessage: {
+                Success: true,
+                Mensagem: "Paciente Criado com Sucesso!"
+                }
+              }
+            });
+        }
+        else if (response.status == 400)
+        {
+          this.subimitted = false;
+          this.msgResult = "Aconteceu algum erro : " + response.data.message;
+        }
       })
       .catch(err => {
-        this.msgResult = "Something wents wrong. Try again. Server Message: " + err;
+          if(err.response.status == 400)
+            this.msgResult = err.response.data.message;
+          else
+            this.msgResult = "Something wents wrong. Try again. Server Message: " + err.response.data.message;
       });
     }
   },
