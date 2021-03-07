@@ -1,17 +1,17 @@
 const consultService = require('../Service/ConsultService');
+const patientService = require('../Service/PatientService');
 
-test('Pass request with pacientId <= 0. Expects error message \'patient can not be empty!\' ', () => {
+test('Pass request with pacientId <= 0. Expects error message \'invalid patientId\' ', () => {
 
   var req = {
     body : {
         patientId : -1,
-
-    }
+      }
   };
 
   var resExpected = { 
     data : "",
-    message : 'patient can not be empty!',
+    message : 'invalid patientId',
     success : false
 
   };
@@ -23,16 +23,54 @@ test('Pass request with pacientId <= 0. Expects error message \'patient can not 
   expect(res).toEqual(resExpected);
 });
 
-test('Pass request with empty string and zero values. Expects success', () => {
+test('Pass request with undefined value. Expects error message \'invalid parameter object.\' ', () => {
 
-  var currentPatient = {
-        nome: '',
-        telefone: '',
-        dataNascimento: '',
-        sexo: '',
-        altura: 0.00,
-        peso: 0.00
-      };
+  var req = {
+  };
+
+  var resExpected = { 
+    data : "",
+    message : 'invalid parameter object.',
+    success : false
+
+  };
+
+  var res = consultService.create(req.body);
+
+  console.log("Response Returned: " + res);
+  console.log("Response Expected: " + resExpected);
+  expect(res).toEqual(resExpected);
+});
+
+test('Pass request with null value. Expects error message \'invalid parameter object.\' ', () => {
+
+  var req = {
+    body : null
+  };
+
+  var resExpected = { 
+    data : "",
+    message : 'invalid parameter object.',
+    success : false
+
+  };
+
+  var res = consultService.create(req.body);
+
+  console.log("Response Returned: " + res);
+  console.log("Response Expected: " + resExpected);
+  expect(res).toEqual(resExpected);
+});
+
+
+test('Pass request with valid patientId, string and zero values. Expects Data Error', () => {
+
+  const currentConsult = 
+        {
+          data: '',
+          anotacao: null,
+          patientId: 0,
+        };
 
   var resExpected = { 
     data : "",
@@ -41,29 +79,18 @@ test('Pass request with empty string and zero values. Expects success', () => {
 
   };
 
-  const res = consultService.create(currentPatient);
-
-  console.log(res);
-
-  return consultService.create(currentPatient).data.then(response => {
-        expect(response).not.toBeNull();
-  }).catch( err => 
-    {
-      console.log(err);
-    });
+  const res = consultService.create(currentConsult);
 
 });
 
-test('Pass request with filled values. Expects success', () => {
+test('Pass request with filled values. Expects success', async () => {
 
-  var currentPatient = {
-        nome: 'testeautomaziado',
-        telefone: '123456789',
-        dataNascimento: '20000101',
-        sexo: 'M',
-        altura: 1.00,
-        peso: 2.00
-      };
+  const currentConsult = 
+  {
+    data: '',
+    anotacao: null,
+    patientId: 1,
+  };
 
   var resExpected = { 
     data : "",
@@ -72,15 +99,16 @@ test('Pass request with filled values. Expects success', () => {
 
   };
 
-  const res = consultService.create(currentPatient);
+  const patientBefore = await patientService.findById(currentConsult.patientId);
 
-  console.log(res);
+  console.log(patientBefore.scheduledConsults);
 
-  return consultService.create(currentPatient).data.then(response => {
-        expect(response).not.toBeNull();
-  }).catch( err => 
-    {
-      console.log(err);
-    });
+  await consultService.create(currentConsult);
+
+  const patientAfter  = await consultService.findById(currentConsult.patientId);
+
+  console.log(patientAfter.scheduledConsults);
+
+  return expect(patientBefore.scheduledConsults).toEqual(patientAfter.scheduledConsults);
 
 });

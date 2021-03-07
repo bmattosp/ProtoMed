@@ -6,7 +6,7 @@ class ConsultsDataService {
   }
 
   getAllScheduleds() {
-    return http.get("/consults/scheduleds");
+    return http.get("/consults/ConsultsScheduleds");
   }  
 
   get(id) {

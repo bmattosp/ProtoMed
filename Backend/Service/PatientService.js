@@ -85,21 +85,21 @@ exports.create = (req, res) => {
 
   };
 
-  exports.findById = (req, res) => {
+  exports.findById = async (patientId) => {
 
-    
-    if(req.params.id <= 0)
+    const result = {
+      data: "",
+      message: "Erro unexpected trying to find patient",
+      success: false
+    };
+
+    if(patientId <= 0)
     {
-        res.status(400).send({
-            message:"id is invalid!"
-            });
-            return;  
+      result.message = "id is invalid!";
+      return result;
     }
 
-    const id = req.params.id;
-
-
-    var patientsData = Patient.findByPk(id, 
+    await Patient.findByPk(patientId, 
       { 
         include: [ 
         {
@@ -116,10 +116,43 @@ exports.create = (req, res) => {
         required: false
         }]
       } 
-    ).then(data => {res.send(data)})
-    .catch(err => {
-        res.status(500).send({message: err.message || "Problem find all patients. Try again later."})
-    })
+    )
+  .then( (consult) => {
+          result.data = consult;
+          result.success = true;
+      },
+      (message) => {
+        result.data = "";
+        result.success = false;
+        result.message = message;
+
+      });
+
+  return  result;
+    
+    
+
+    // var patientsData = Patient.findByPk(patientId, 
+    //   { 
+    //     include: [ 
+    //     {
+    //     model: db.consults,
+    //     where : {data: {[Op.gte]:  new Date() }},
+    //     as: 'scheduledConsults',
+    //     required: false
+    //     },
+
+    //     {
+    //     model: db.consults,
+    //     where : {data: {[Op.lt]:  new Date() }},
+    //     as: 'historicalConsults',
+    //     required: false
+    //     }]
+    //   } 
+    // ).then(data => {res.send(data);})
+    // .catch(err => {
+    //     res.status(500).send({message: err.message || "Problem find all patients. Try again later."})
+    // });
 
   };
 

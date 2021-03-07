@@ -4,118 +4,181 @@ const Consult = db.consults;
 const Op = db.Sequelize.Op;
 
 // Create and Save a Consult
-exports.create = (createDto) => {
+exports.create = async (createDto) => {
 
-    if(createDto.data === null || createDto.patientId <= 0 )
+    if(createDto === null || typeof createDto === 'undefined' )
     {
         return  {
             data: "",
-            message:"patient can not be empty!",
+            message:"invalid parameter object.",
             success: false
         };
     }
 
-    const creationReturn = Consult.create(createDto);
+    if(isNaN(createDto.patientId) || createDto.patientId <= 0)
+    {
+        return  {
+            data: "",
+            message:"invalid patientId",
+            success: false
+        };
+    }
 
-    return  {
-        data: creationReturn,
-        message: "",
-        success: true
+    const creationReturn = {
+        data: "",
+        message: "The consult was not update. Unexpected error.",
+        success: false
     };
+
+    await Consult.create(createDto)
+    .then( (consult) => {
+            creationReturn.data = consult;
+            creationReturn.success = true;
+        });
+
+    return  creationReturn;
  };
 
-exports.findall = (req, res) => {
+exports.findall = async () => {
 
-  Consult.findAll({include: db.patients }).
-  then(data => {res.send(data)})
-  .catch(err => {
-      res.status(500).send({message: err.message || "Problem find all Consults. Try again later."})
-  })
+    const result = {
+        data: "",
+        message: "The consult was not update. Unexpected error.",
+        success: false
+    };
 
-};
+    await Consult.findAll({include: db.patients })
+    .then( (consult) => {
+            result.data = consult;
+            result.success = true;
+        });
 
-exports.findallScheduleds = (req, res) => {
+    return  result;
 
-  Consult.findAll({ where:{data: {[Op.gte]:  new Date() }} ,include: db.patients }).
-  then(data => {res.send(data)})
-  .catch(err => {
-      res.status(500).send({message: err.message || "Problem find all Consults. Try again later."})
-  })
-
-};
-
-exports.updateNote = (req, res) => {
-
-  var oneConsult =  req.body;
-
-  var consult = Consult.findByPk(oneConsult.consultId);
-  consult.anotacoes = oneConsult.anotacao;
-  
-  Consult.update({anotacoes: consult.anotacoes}, {
-    where: { id: oneConsult.consultId }
-  })
-  .then(data => {res.send(data)})
-  .catch(err => {
-      res.status(500).send({message: err.message || "Problem find all Consults. Try again later."})
-  })
+//   Consult.findAll({include: db.patients }).
+//   then(data => {res.send(data)})
+//   .catch(err => {
+//       res.status(500).send({message: err.message || "Problem find all Consults. Try again later."})
+//   })
 
 };
 
+exports.findallConsultsScheduleds = async function(result) {
+
+    result = {
+        data: "",
+        message: "The consult was not update. Unexpected error.",
+        success: false
+    };
+
+    await Consult.findAll({ where:{data: {[Op.gte]:  new Date() }} ,include: db.patients })
+    .then( (consult) => {
+            result.data = consult;
+            result.success = true;
+
+        });
+
+//   Consult.findAll({ where:{data: {[Op.gte]:  new Date() }} ,include: db.patients }).
+//   then(data => {res.send(data)})
+//   .catch(err => {
+//       res.status(500).send({message: err.message || "Problem find all Consults. Try again later."})
+//   });
+
+};
+
+exports.updateNote = async (consultId, anotacao) => {
+
+    var consult = Consult.findByPk(consultId);
+    consult.anotacoes = anotacao;
+
+    const result = {
+        data: "",
+        message: "The consult was not update. Unexpected error.",
+        success: false
+    };
+
+    await Consult.update({anotacoes: consult.anotacoes}, 
+        { where: { id: consultId } })
+    .then( (consult) => 
+        {
+            result.data = consult;
+            result.success = true;
+        });
+
+    return  result;
+
+//   Consult.update({anotacoes: consult.anotacoes}, {
+//     where: { id: oneConsult.consultId }
+//   })
+//   .then(data => {res.send(data)})
+//   .catch(err => {
+//       res.status(500).send({message: err.message || "Problem find all Consults. Try again later."})
+//   });
+
+};
 
 
-exports.findById = (req, res) => {
+exports.findById = async (consultId) => {
 
+    const result = {
+        data: "",
+        message: "The consult was not update. Unexpected error.",
+        success: false
+    };
 
-    if( req.params.id <= 0)
+    if( consultId <= 0)
     {
-        res.status(400).send({
-            message:"id can not be empty!"
-            });
-            return;  
+        result.message = "id can not be empty!";
+        result.success = false;
+        return result;
+        // res.status(400).send({
+        //     message:"id can not be empty!"
+        //     });
+        //     return;  
     }
 
-  const id = req.params.id;
+    await Consult.findByPk(consultId).
+    then(data => {
+        result.data = data;
+        result.success = true;
+    });
 
-
-  Consult.findByPk(id).
-  then(data => {res.send(data)})
-  .catch(err => {
-      res.status(500).send({message: err.message || "Problem find all Consults. Try again later."})
-  })
+    return result;
 
 };
 
-exports.delete = (req, res) => {
+exports.delete = async (consultId) => {
 
-    
-    if( req.params.id <= 0)
+    const result = {
+        data: "",
+        message: "The consult was not update. Unexpected error.",
+        success: false
+    };
+
+    if( consultId <= 0)
     {
-        res.status(400).send({
-            message:"id can not be empty!"
-            });
-            return;  
+        result.message = "id can not be empty!";
+        result.success = false;
+        return result;
+        // res.status(400).send({
+        //     message:"id can not be empty!"
+        //     });
+        //     return;  
     }
-    
-  const id = req.params.id;
 
-  Consult.destroy({
-      where: { id: id }
-  })
-      .then(num => {
-      if (num == 1) {
-          res.send({
-          message: "Consult was deleted!"
-          });
-      } else {
-          res.send({
-          message: `Consult id=${id} deleted!`
-          });
-      }
-      })
-      .catch(err => {
-      res.status(500).send({
-          message: "Erro to delete Consult id=" + id
-      });
-      });
+    await Consult.destroy({ where: { id: consultId } })
+    .then(num => {
+        if (num == 1) {
+            result.data = data;
+            result.success = true;
+            result.message = "Consult was deleted!";
+
+        } else 
+        {
+            result.data = data;
+            result.success = true;
+            result.message = "Consult id=${id} deleted!";
+        }
+    });
 };
     
