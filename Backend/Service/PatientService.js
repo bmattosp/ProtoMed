@@ -72,11 +72,16 @@ exports.create = (req, res) => {
 
   exports.findall = (req, res) => {
 
+    console.log("function patients.findAll");
     Patient.findAll().
-    then(data => {res.send(data)})
-    .catch(err => {
-        res.status(500).send({message: err.message || "Problem find all patients. Try again later."})
+    then(data => {
+      console.log(data);
+      res.send(data);
     })
+    .catch(err => {
+        console.log(err.message);
+        res.status(500).send({message: err.message || "Problem find all patients. Try again later."});
+    });
 
   };
 

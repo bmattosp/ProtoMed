@@ -4,7 +4,20 @@ module.exports = app => {
     var router = require("express").Router();
   
     // Create a new Consult
-    router.post("/", consultService.create);
+    router.post("/", (req, res) => {
+      
+      const createReturn = consultService.create(req.body).
+      then(response => {
+        if(response.success === true)
+          res.send(data);
+        else
+          res.status(400).send({message:response.message});
+      })
+      .catch(err => {
+          res.status(500).send({message: err.message || "Problem creating a new patient. Try again later."})
+      });
+  
+    });
   
     // Retrieve all Consults
     router.get("/", consultService.findall);

@@ -1,13 +1,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+require("dotenv").config();
 const db = require("./Infra/SequelizeContext");
-
 
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:8080"
+  origin: "http://localhost:" + process.env.CORS_ORIGIN_PORT,
+  
 };
 
 app.use(cors(corsOptions));

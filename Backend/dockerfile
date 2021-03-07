@@ -1,0 +1,26 @@
+FROM node:14.12.0
+
+WORKDIR /code
+
+ENV DB_USER="root"
+ENV DB_PASS="example"
+ENV DB_HOST="db"
+ENV DB_DEFAULTDB="protomedDB"
+ENV DB_PORT=3306
+ENV DB_DIALECT="mysql"
+ENV DB_POOL_MAX=5
+ENV DB_POOL_MIN=0
+ENV DB_POOL_ACQUIRE=30000
+ENV DB_POOL_IDLE=10000
+
+ENV APP_PORT=8082
+
+
+COPY package.json /code/package.json
+COPY wait-for-it /code/wait-for-it/
+
+RUN npm install
+
+COPY . /code
+
+CMD [ "node", "server.js" ]

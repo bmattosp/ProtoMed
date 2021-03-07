@@ -4,15 +4,26 @@
   "description": "backend server of protomed system",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "Breno Mattos",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mysql2": "^2.1.0",
-    "sequelize": "^5.21.3"
+    "mysql2": "^2.2.5",
+    "sequelize": "^5.22.3"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.7"
+  },
+  "jshintConfig": {
+    "esversion": 6
+  },
+  "script": {
+    "start": "nodemon server.js"
   }
 }
