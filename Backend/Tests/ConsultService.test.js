@@ -1,7 +1,9 @@
+require("dotenv").config();
+const db = require("../Infra/SequelizeContext");
 const consultService = require('../Service/ConsultService');
 const patientService = require('../Service/PatientService');
 
-test('Pass request with pacientId <= 0. Expects error message \'invalid patientId\' ', () => {
+test('Create consult, requesting pacientId <= 0. Expects error message \'invalid patientId\' ', async () => {
 
   var req = {
     body : {
@@ -16,14 +18,15 @@ test('Pass request with pacientId <= 0. Expects error message \'invalid patientI
 
   };
 
-  var res = consultService.create(req.body);
+  var res = await consultService.create(req.body);
 
   console.log("Response Returned: " + res);
   console.log("Response Expected: " + resExpected);
-  expect(res).toEqual(resExpected);
+
+  return expect(res).toEqual(resExpected);
 });
 
-test('Pass request with undefined value. Expects error message \'invalid parameter object.\' ', () => {
+test('Create consult, requesting undefined value. Expects error message \'invalid parameter object.\' ', async () => {
 
   var req = {
   };
@@ -35,14 +38,14 @@ test('Pass request with undefined value. Expects error message \'invalid paramet
 
   };
 
-  var res = consultService.create(req.body);
+  var res = await consultService.create(req.body);
 
   console.log("Response Returned: " + res);
   console.log("Response Expected: " + resExpected);
-  expect(res).toEqual(resExpected);
+  return expect(res).toEqual(resExpected);
 });
 
-test('Pass request with null value. Expects error message \'invalid parameter object.\' ', () => {
+test('Create consult, requesting null value. Expects error message \'invalid parameter object.\' ', async () => {
 
   var req = {
     body : null
@@ -55,21 +58,21 @@ test('Pass request with null value. Expects error message \'invalid parameter ob
 
   };
 
-  var res = consultService.create(req.body);
+  var res = await consultService.create(req.body);
 
-  console.log("Response Returned: " + res);
-  console.log("Response Expected: " + resExpected);
-  expect(res).toEqual(resExpected);
+  return expect(res).toEqual(resExpected);
 });
 
 
-test('Pass request with valid patientId, string and zero values. Expects Data Error', () => {
+test('Create consult, requesting valid patientId and empty date, Expects database exception', async () => {
+
+  jest.setTimeout(1000000);
 
   const currentConsult = 
         {
           data: '',
           anotacao: null,
-          patientId: 0,
+          patientId: 1,
         };
 
   var resExpected = { 
@@ -79,15 +82,27 @@ test('Pass request with valid patientId, string and zero values. Expects Data Er
 
   };
 
-  const res = consultService.create(currentConsult);
+  
 
+  try
+  {
+    return expect(await consultService.create(currentConsult)).not.toThrow();
+  }
+  catch(err){
+    console.log("ERRO: " + err);
+
+  }
+
+ 
 });
 
-test('Pass request with filled values. Expects success', async () => {
+test('Create consult, requesting valid pacientId and future valid date . Expects success', async () => {
+
+  jest.setTimeout(1000000);
 
   const currentConsult = 
   {
-    data: '',
+    data: '2999-07-03 11:11:53',
     anotacao: null,
     patientId: 1,
   };
@@ -99,16 +114,50 @@ test('Pass request with filled values. Expects success', async () => {
 
   };
 
-  const patientBefore = await patientService.findById(currentConsult.patientId);
+  try{
+    const patientBefore = await patientService.findById(currentConsult.patientId);
 
-  console.log(patientBefore.scheduledConsults);
+    await consultService.create(currentConsult);
+
+    const patientAfter  = await patientService.findById(currentConsult.patientId);
+    return expect(patientBefore.data.scheduledConsults.length).not.toBe(patientAfter.data.scheduledConsults.length);
+  }
+  catch(err){
+    console.log("Erro: " + err);
+  }
+});
+
+test('Get All Consults. Expects Success ', async () => {
+
+  const currentConsult = 
+  {
+    data: '3200-01-01 12:00:00',
+    anotacao: "this is the test of Get All Consults",
+    patientId: 1,
+  };
+
+  var resExpected = { 
+    data : "",
+    message : 'invalid patientId',
+    success : false
+
+  };
+  
+  var allconsultsFirst = await consultService.findall();
+
+  const firstTotal = allconsultsFirst.data.length;
 
   await consultService.create(currentConsult);
 
-  const patientAfter  = await consultService.findById(currentConsult.patientId);
+  var allconsultsSecond = await consultService.findall();
 
-  console.log(patientAfter.scheduledConsults);
+  const secondTotal = allconsultsSecond.data.length;
 
-  return expect(patientBefore.scheduledConsults).toEqual(patientAfter.scheduledConsults);
+  return expect(secondTotal).toBe(firstTotal + 1);
+});
 
+afterAll(async done => {
+  // Closing the DB connection allows Jest to exit successfully.
+  await db.sequelize.close();
+  done();
 });
