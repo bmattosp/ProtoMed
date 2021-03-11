@@ -4,10 +4,10 @@ module.exports = app => {
     var router = require("express").Router();
   
     // Create a new Consult
-    router.post("/", (req, res) => {
+    router.post("/", async (req, res) => {
       try
       {
-        const result = consultService.create(req.body);
+        const result = await consultService.create(req.body);
         if(result.success === true)
           res.send(result.data);
         else
@@ -21,11 +21,11 @@ module.exports = app => {
     });
   
     // Retrieve all Consults
-    router.get("/", (req, res) => {
+    router.get("/", async (req, res) => {
       try
       {
         
-        const result = consultService.findall();
+        const result = await consultService.findall();
         if(result.success === true)
           res.send(result.data);
         else
@@ -39,10 +39,10 @@ module.exports = app => {
     });
 
     // Retrieve all Consults
-    router.get("/ConsultsScheduleds", (req, res) => {
+    router.get("/ConsultsScheduleds", async (req, res) => {
       try
       {
-        const result = consultService.findallConsultsScheduleds();
+        const result = await consultService.findallConsultsScheduleds();
         if(result.success === true)
           res.send(result.data);
         else
@@ -56,10 +56,10 @@ module.exports = app => {
     });
   
     // Retrieve a single Consult with id
-    router.get("/:id", (req, res) => {
+    router.get("/:id", async (req, res) => {
       try
       {
-        const result = consultService.findById(req.body.consultId);
+        const result = await consultService.findById(req.body.consultId);
         if(result.success === true)
           res.send(result.data);
         else
@@ -73,10 +73,10 @@ module.exports = app => {
     });
   
     // Delete a Consult with id
-    router.delete("/:id", (req, res) => {
+    router.delete("/:id", async (req, res) => {
       try
       {
-        const result = consultService.delete(req.body.consultId);
+        const result = await consultService.delete(req.body.consultId);
         if(result.success === true)
           res.send(result.data);
         else
@@ -90,10 +90,10 @@ module.exports = app => {
     });
 
      // Update Note in a Consult
-    router.put("/note", (req, res) => {
+    router.put("/note", async (req, res) => {
       try
       {
-        const result = consultService.updateNote(req.body.consultId, req.body.note);
+        const result = await consultService.updateNote(req.body.consultId, req.body.note);
         if(result.success === true)
           res.send(result.data);
         else

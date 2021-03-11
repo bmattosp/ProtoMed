@@ -1,6 +1,6 @@
 <template>
     <div>
-      <b-alert v-if="showAlert()" :variant="whitchVariant()" show>
+      <b-alert id="alertMessage" v-if="showAlert()" :variant="whitchVariant()" show>
         {{Message}}
       </b-alert>
     </div>

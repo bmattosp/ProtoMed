@@ -5,7 +5,7 @@
     <h2>Patients List</h2>
     <div class="row">
       <div class="col  d-flex justify-content-end">
-        <button @click="newPatient()" class="btn btn-success">Novo Paciente</button>
+        <button @click="newPatient()" id="btnNewPatient" class="btn btn-success">Novo Paciente</button>
       </div>
     </div>
     
@@ -73,7 +73,7 @@ export default {
   methods: {
     getPatients() {
 
-      this.patients = ["Patient 1", "Patient 2", "Patient 3"];
+      this.patients = [];
 
       PatientsDataService.getAll()
       .then(response => {
@@ -83,7 +83,7 @@ export default {
             this.patients = response.data;
         })
         .catch(err => {
-          this.AlertMessage = {Mensagem:"Something wents wrong!" + err};
+          this.AlertMessage = {Mensagem:"Something wents wrong! - " + err};
         });
 
     },

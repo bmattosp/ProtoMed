@@ -18,7 +18,7 @@
       </div>
       <div class="form-group">
         <label for="sexo">Sexo</label>
-        <b-form-select v-model="currentPatient.sexo" :options="SexoOptions" size="sm" class="mt-3"></b-form-select>
+        <b-form-select id="sexo" v-model="currentPatient.sexo" :options="SexoOptions" size="sm" class="mt-3"></b-form-select>
       </div>
       <div class="form-group">
         <label for="dataNascimetno">Data Nascimento</label>
