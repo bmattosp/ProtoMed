@@ -63,7 +63,7 @@ exports.findall = async () => {
 
 };
 
-exports.findallConsultsScheduleds = async function(result) {
+exports.findallConsultsScheduleds = async function() {
 
     result = {
         data: "",
@@ -78,12 +78,7 @@ exports.findallConsultsScheduleds = async function(result) {
 
         });
 
-//   Consult.findAll({ where:{data: {[Op.gte]:  new Date() }} ,include: db.patients }).
-//   then(data => {res.send(data)})
-//   .catch(err => {
-//       res.status(500).send({message: err.message || "Problem find all Consults. Try again later."})
-//   });
-
+        return result;
 };
 
 exports.updateNote = async (consultId, anotacao) => {

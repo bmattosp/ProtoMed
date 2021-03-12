@@ -1,4 +1,7 @@
+const { assert } = require("console");
+
 describe('Open the Protomed site', () => {
+       
     it('It contains the name Protomed', () => {
       cy.visit('/');
 
@@ -177,10 +180,96 @@ describe('Open the Protomed site', () => {
         cy.get('*').contains("Consultas Agendadas").click();
 
         cy.contains(patientName);
-        
-        
 
       });
+
+      it('Schedule a consult and take a consult note', () => {
+        cy.visit('/');
+
+        cy.get('#btnNewPatient').click();
+
+        const date = Date.now();
+        const patientName =  "functional test " + date;
+        const telefone = '12345678912';
+        const expectedTelelefone = '(12)345678912';
+        const sexo = 'Feminino';
+        const dataNascimento = '1932-12-22';
+        const altura = '1541';
+        const expectedAltura = '1.54';
+        const peso = '12799';
+        const expectedPeso = '127.99';
+        
+
+        cy.get('#nome').type(patientName).should('have.value', patientName);
+        cy.get('#telefone').type(telefone).should('have.value', expectedTelelefone);
+        cy.get('#sexo').select(sexo);
+        cy.get('#dataNascimento').type(dataNascimento).should('have.value', dataNascimento);
+        cy.get('#altura').type(altura).should('have.value', expectedAltura);
+        cy.get('#peso').type(peso).should('have.value', expectedPeso);
+
+        cy.get('#bntCreatePatient').click();
+
+        cy.contains(patientName).click();
+
+        cy.get('#newConsultBtn').click();
+
+        const consultDate = '2053-12-22T11:05';
+
+        cy.get('#data').type(consultDate).should('have.value', consultDate);
+
+        cy.get('#updateBtn').click();
+
+        cy.get('#accordion').within(($accordion) => {
+            cy.get('#show-btn').its(0).click();
+        });
+
+
+        const noteText = "qualquer coisa" + Date.now() + Date.now();
+        cy.get('#txtareaConsultNotes').type(noteText).should('have.value', noteText);
+
+        cy.get('#editConsultNoteModal___BV_modal_content_').within(($accordion) => {
+            cy.get('.btn-primary').its(0).click();
+        });
+
+        cy.get('#accordion').within(($accordion) => {
+            cy.get('textarea').its(0).should('have.value', noteText);
+        });
+        
+   });
+
+    it('Delete a patient', () => {
+        cy.visit('/');
+
+        cy.get('#btnNewPatient').click();
+
+        const date = Date.now();
+        const patientName =  "functional test " + date;
+        const telefone = '12345678912';
+        const expectedTelelefone = '(12)345678912';
+        const sexo = 'Feminino';
+        const dataNascimento = '1932-12-22';
+        const altura = '1541';
+        const expectedAltura = '1.54';
+        const peso = '12799';
+        const expectedPeso = '127.99';
+        
+
+        cy.get('#nome').type(patientName).should('have.value', patientName);
+        cy.get('#telefone').type(telefone).should('have.value', expectedTelelefone);
+        cy.get('#sexo').select(sexo);
+        cy.get('#dataNascimento').type(dataNascimento).should('have.value', dataNascimento);
+        cy.get('#altura').type(altura).should('have.value', expectedAltura);
+        cy.get('#peso').type(peso).should('have.value', expectedPeso);
+
+        cy.get('#bntCreatePatient').click();
+
+        cy.contains(patientName).click();
+
+        cy.get('#deleteBtn').click();
+
+        cy.get('h2').should("contain", "Patient was deleted!");        
+    
+    });
 
       
   });
