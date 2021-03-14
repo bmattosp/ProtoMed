@@ -19,6 +19,7 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <ul class="navbar-nav">
         <li class="nav-item active">
           <a class="nav-link" href="/patients">
@@ -30,6 +31,7 @@
           <a class="nav-link" href="/consults">Consultas Agendadas</a>
         </li>
       </ul>
+      </div>
     </nav>
     <div style="margin-top: 50px">
       <router-view />

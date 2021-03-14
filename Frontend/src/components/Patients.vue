@@ -4,7 +4,7 @@
     <Alert v-bind:Message="AlertMessage.Mensagem" v-bind:Success="AlertMessage.Success"></Alert> 
     <h2>Patients List</h2>
     <div class="row">
-      <div class="col  d-flex justify-content-end">
+      <div class="col d-flex justify-content-end mb-5">
         <button @click="newPatient()" id="btnNewPatient" class="btn btn-success">Novo Paciente</button>
       </div>
     </div>

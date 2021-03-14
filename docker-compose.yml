@@ -7,9 +7,15 @@ services:
       dockerfile: dockerfile
     container_name: protomedbackend
     ports: 
-      - "8082:80"
+      - "8082:8082"
     depends_on:
       - "db"
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 500M
+    #     reservations:
+    #       memory: 300M
     #command: ["./wait-for-it/wait-for-it.sh", "db:3306", "--", "python", "app.py"]
   
   frontend:
@@ -18,7 +24,13 @@ services:
       dockerfile: dockerfile
     container_name: protomedfrontend
     ports: 
-      - "8081:80"
+      - "8080:80"
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 200M
+    #     reservations:
+    #       memory: 100M
   
   db:
     build:
@@ -30,10 +42,32 @@ services:
     ports:
       - 3306:3306
       - 33060:33060
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 200M
+    #     reservations:
+    #       memory: 100M
 
   adminer:
     image: adminer
     restart: always
     ports:
-      - 8080:8080
-    
+      - 8083:8080
+    deploy:
+      resources:
+        limits:
+          memory: 200M
+        reservations:
+          memory: 100M
+
+  cypress-chrome:
+    image: "cypress/included:6.6.0"
+    # container_name: cypress
+    # "cypress/included" images have entrypoint set to globally installed cypress
+    # so the command can simply add any arguments
+    command: "--browser chrome"
+    volumes:
+      - ./UiTests/cypress:/cypress
+      - ./UiTests/cypress-docker.json:/cypress.json
+

@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-db.sequelize.sync();
+db.connectionRetrier(10);
 
 // first route
 app.get("/", (req, res) => {

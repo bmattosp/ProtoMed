@@ -106,7 +106,7 @@
       </div>
 
       <div>
-      <div class="row">
+      <div class="row" v-show="false">
         <div class="col-12" id="accordionHist">
           <div class="card">
             <div class="card-header" >
