@@ -27,7 +27,7 @@ module.exports = app => {
         
         const result = await consultService.findall();
         if(result.success === true)
-          res.send(result.data);
+          res.status(200).send(result.data);
         else
           res.status(400).send({message:result.message});
       }
@@ -44,7 +44,7 @@ module.exports = app => {
       {
         const result = await consultService.findallConsultsScheduleds();
         if(result.success === true)
-          res.send(result.data);
+          res.status(200).send(result.data);
         else
           res.status(400).send({message:result.message});
       }

@@ -9,7 +9,7 @@ module.exports = app => {
       {
         const result = await patients.create(req.body);
         if(result.success === true)
-          res.status(200).send(result.data);
+          res.send(result.data);
         else
           res.status(400).send({message:result.message});
       }
@@ -27,7 +27,7 @@ module.exports = app => {
       {
         const result = await patients.findall(req.body);
         if(result.success === true)
-          res.status(200).send(result.data);
+          res.send(result.data);
         else
           res.status(400).send({message:result.message});
       }
@@ -44,7 +44,7 @@ module.exports = app => {
       {
         const result = await patients.findById(req.params.id);
         if(result.success === true)
-          res.status(200).send(result.data);
+          res.send(result.data);
         else
           res.status(400).send({message:result.message});
       }
@@ -62,7 +62,7 @@ module.exports = app => {
       {
         const result = await patients.update(req.body);
         if(result.success === true)
-        res.status(200).send(result.data);
+        res.send(result.data);
         else
           res.status(400).send({message:result.message});
       }
@@ -80,7 +80,7 @@ module.exports = app => {
       {
         const result = await patients.delete(req.params.id);
         if(result.success === true)
-          res.status(200).send(result.data);
+          res.send(result.data);
         else
           res.status(400).send({message:result.message});
       }

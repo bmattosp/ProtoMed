@@ -57,9 +57,9 @@ db.sequelize = sequelize;
 db.patients = require("../../Domain/Patient.js")(sequelize, Sequelize);
 db.consults = require("../../Domain/Consult.js")(sequelize, Sequelize);
 
-db.patients.hasMany(db.consults, { as: 'historicalConsults'});
-db.patients.hasMany(db.consults, { as: 'scheduledConsults'});
-db.consults.belongsTo(db.patients);
+db.patients.hasMany(db.consults, { onDelete:'CASCADE', as: 'historicalConsults'});
+db.patients.hasMany(db.consults, { onDelete:'CASCADE', as: 'scheduledConsults'});
+db.consults.belongsTo(db.patients, { onDelete:'CASCADE'});
 
 db.connectionRetrier = connectionRetrier;
 

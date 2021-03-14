@@ -61,13 +61,10 @@ services:
         reservations:
           memory: 100M
 
-  cypress-chrome:
-    image: "cypress/included:6.6.0"
-    # container_name: cypress
-    # "cypress/included" images have entrypoint set to globally installed cypress
-    # so the command can simply add any arguments
-    command: "--browser chrome"
-    volumes:
-      - ./UiTests/cypress:/cypress
-      - ./UiTests/cypress-docker.json:/cypress.json
+  # cypress-chrome:
+  #   image: "cypress/included:6.6.0"
+  #   command: "--browser chrome"
+  #   volumes:
+  #     - ./UiTests/cypress:/cypress
+  #     - ./UiTests/cypress-docker.json:/cypress.json
 
