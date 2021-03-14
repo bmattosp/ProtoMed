@@ -1,13 +1,14 @@
 module.exports = {
-    HOST: "localhost",
-    USER: "root",
-    PASSWORD: "123456",
-    DB: "protomedDB",
-    dialect: "mysql",
+    HOST: process.env.DB_HOST,
+    USER: process.env.DB_USER,
+    PASSWORD: process.env.DB_PASS,
+    DB: process.env.DB_DEFAULTDB,
+    dialect:process.env.DB_DIALECT,
+    port: process.env.DB_PORT,
     pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
+      max: parseInt(process.env.DB_POOL_MAX, 10),
+      min: parseInt(process.env.DB_POOL_MIN, 10),
+      acquire: parseInt(process.env.DB_POOL_ACQUIRE, 10),
+      idle: parseInt(process.env.DB_POOL_IDLE, 10)
     }
   };

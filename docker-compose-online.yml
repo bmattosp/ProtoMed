@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  backend:
+    image: brmdpdocker/protomedbackend:1.0.0
+    container_name: protomedbackend
+    ports: 
+      - "8081:80"
+    depends_on:
+      - "db"
+    #command: ["./wait-for-it/wait-for-it.sh", "db:3306", "--", "python", "app.py"]
+  
+  frontend:
+    image: brmdpdocker/protomedfrontend:1.0.0
+    container_name: protomedfrontend
+    ports: 
+      - "8082:80"
+  
+  db:
+    build:
+      context: ./BancoDeDados
+      dockerfile: dockerfile
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    ports:
+      - 3306:3306
+      - 33060:33060
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    

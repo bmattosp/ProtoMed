@@ -5,9 +5,68 @@ Project created for PBMED interview exam.
 
 ## Instrunctions to run the application
 
-All commands showned here, has to be executed by command line. I´ve used powershell.
+All commands showned here, should be executed by command line. I´ve used powershell.
+There are two ways to run the Protomed environment:
 
-## Requirements
+- Docker
+- Runing in local machine
+
+### Docker
+
+#### Requirements
+
+>Docker instaled in your machine
+
+#### Setup
+
+ - Using command line, nav to the folder you have cloned the project.
+ - run the command inside the project root folder:
+
+        ```
+        $docker-compose up --build 
+        ```
+
+ - wait to finish and that is it
+
+ #### Accessing
+
+  The default address to access the Protomed page is http://localhost:8080
+
+#### Running Automated Tests
+
+The project has two kind of auto tests:
+ >Functional ui tests:
+    - Using command line, nav to ./UiTests inside the project folder
+    - run
+    ```
+     $npm install
+    ```
+    - After install finis run:
+    ```
+     $npx cypress open
+    ```
+    - Cypress will open a test window. Click two times in the sample_spec.js file
+    - A new chrome window will open doing all automated tests
+  
+ >Integrated backend test:
+    > Using command line, nav to ./Backend inside the project folder
+    > run 
+    ```
+    $npm install
+    ```
+    > After finish, run:
+    ```
+     $npm run test
+    ```
+    > Wait for the result
+
+#### Adminer
+
+  Docker compose will install a db admin for the mysql container db. Access http://localhost:8083 and make queries in the protomedDB schema to see all the data.
+
+### Local machine
+
+#### Requirements
 
 >MySQL:
      Link: https://www.mysql.com/downloads/  
@@ -18,13 +77,13 @@ All commands showned here, has to be executed by command line. I´ve used powers
     Chocolatey: choco install nodejs
 
 
-### BackEnd setup
+#### BackEnd setup
 
-#### 1º step - Open the Backend folder
+##### 1º step - Open the Backend folder
 
 Open the command prompt, then navegate to /Backend dir inside the project dir.
 
-#### 2º step - Dependencies install
+##### 2º step - Dependencies install
 
 Use npm to install all backend dependencies
 
@@ -32,29 +91,16 @@ Use npm to install all backend dependencies
 npm install
 ```
 
-#### 3º step - Config the sequelize context
+##### 3º step - Config the sequelize context
 
-Open the project, then inside /Backend/Infra/SequelizeContext has the db.config.js file.
+Open the project code, then inside /Backend/.env has env variables to control database access
 Edit the file and fill the fields with your database configuration.
 
-Example:
-```
-module.exports = {
-    HOST: "localhost",
-    USER: "root",
-    PASSWORD: "blablabla",
-    DB: "protomedDB",
-    dialect: "mysql",
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    }
-  };
-```
+DB_USER=<your db user>
+DB_PASS=<db user password>
+DB_PORT=<your mysql port>
 
-#### 4º step - Script to create the db scheme
+##### 4º step - Script to create the db scheme
 
 Open mysql and run the script above to create the scheme where all the tables will be in.
 
@@ -62,7 +108,7 @@ Open mysql and run the script above to create the scheme where all the tables wi
 CREATE SCHEMA `protomeddb` ;
 ```
 
-#### Final step - Run the server.js
+##### Final step - Run the server.js
 
 Execute the command above to run the backend server
 ```
@@ -72,11 +118,11 @@ After run, all database will be created by Sequelize, and the api routes will be
 
 
 
-### FrontEnd setup
+##### FrontEnd setup
 
 All the commands has to be runned at /FrontEnd folder.
 
-#### 1º step
+##### 1º step
 
 Execute npm to install all the dependencies
 
@@ -84,14 +130,14 @@ Execute npm to install all the dependencies
 npm install
 ```
 
-#### 2º step
+##### 2º step
 
 Execute the command above to run the vue application.
 ```
 npm run serve
 ```
 
-#### 3º step
+##### 3º step
 
 open http://localhost:8080 to enter on the website.
 

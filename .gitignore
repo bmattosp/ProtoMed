@@ -19,3 +19,9 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+/UiTests/cypress/screenshots/
+/UiTests/cypress/videos/
+
+
+

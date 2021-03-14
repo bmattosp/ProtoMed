@@ -1,0 +1,1 @@
+docker run --name protomedMysql -e MYSQL_ROOT_PASSWORD=1234456 mysql:latest

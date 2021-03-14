@@ -5,18 +5,21 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.4.0",
     "core-js": "^3.4.4",
+    "dotenv": "^8.2.0",
     "vue": "^2.6.11",
     "vue-router": "^3.1.5",
     "vue-the-mask": "^0.11.1"
   },
   "devDependencies": {
+    "@babel/helper-compilation-targets": "^7.10.4",
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-service": "^4.1.0",
@@ -42,5 +45,8 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "jshintConfig": {
+    "esversion": 6
+  }
 }

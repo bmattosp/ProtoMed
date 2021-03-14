@@ -1,0 +1,70 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: dockerfile
+    container_name: protomedbackend
+    ports: 
+      - "8082:8082"
+    depends_on:
+      - "db"
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 500M
+    #     reservations:
+    #       memory: 300M
+    #command: ["./wait-for-it/wait-for-it.sh", "db:3306", "--", "python", "app.py"]
+  
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: dockerfile
+    container_name: protomedfrontend
+    ports: 
+      - "8080:80"
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 200M
+    #     reservations:
+    #       memory: 100M
+  
+  db:
+    build:
+      context: ./BancoDeDados
+      dockerfile: dockerfile
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    ports:
+      - 3306:3306
+      - 33060:33060
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 200M
+    #     reservations:
+    #       memory: 100M
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8083:8080
+    deploy:
+      resources:
+        limits:
+          memory: 200M
+        reservations:
+          memory: 100M
+
+  # cypress-chrome:
+  #   image: "cypress/included:6.6.0"
+  #   command: "--browser chrome"
+  #   volumes:
+  #     - ./UiTests/cypress:/cypress
+  #     - ./UiTests/cypress-docker.json:/cypress.json
+

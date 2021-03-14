@@ -51,7 +51,7 @@ export default {
     {
       ConsultsDataService.create(this.currentConsult)
       .then(response => {
-        this.subimitted = (response.status == 200);
+        this.subimitted = (response.status === 200);
         router.push({name:"patient-details", params: {id: this.currentConsult.patientId}});
       })
       .catch(err => {
