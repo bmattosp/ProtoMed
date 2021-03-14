@@ -36,17 +36,17 @@ There are two ways to run the Protomed environment:
 
 The project has two kind of auto tests:
  >Functional ui tests:
-    > Using command line, nav to ./UiTests inside the project folder
-    > run
+    - Using command line, nav to ./UiTests inside the project folder
+    - run
     ```
      $npm install
     ```
-    > After install finis run:
+    - After install finis run:
     ```
      $npx cypress open
     ```
-    > Cypress will open a test window. Click two times in the sample_spec.js file
-    > A new chrome window will open doing all automated tests
+    - Cypress will open a test window. Click two times in the sample_spec.js file
+    - A new chrome window will open doing all automated tests
   
  >Integrated backend test:
     > Using command line, nav to ./Backend inside the project folder
